@@ -1,31 +1,33 @@
-// src/controllers/ratesController.ts
 import { Request, Response } from "express";
-import fs from "fs";
-import path from "path";
+import cron from "node-cron";
 import { scrapeRates } from "../services/scrapeRates";
+import { Rates } from "../types/types";
+import { readJson, writeJson } from "../utils/fileDb"; 
 
-const ratesFile = path.join(__dirname, "../data/rates.json");
+const ratesFile = "rates.json"; // just file name
 let cachedRates: Rates | null = null;
 
-// Initialize by reading the file if exists
-if (fs.existsSync(ratesFile)) {
-  cachedRates = JSON.parse(fs.readFileSync(ratesFile, "utf-8"));
+// ✅ Initialize from file safely
+try {
+  cachedRates = readJson<Rates>(ratesFile);
+} catch (err) {
+  console.warn("⚠️ Rates file not found or invalid, starting with null cache");
+  cachedRates = null;
 }
 
-// Cron job to update rates every minute
-import cron from "node-cron";
-import { Rates } from "../types/types";
-
+// ✅ Cron job → update rates every 1 minute
 cron.schedule("*/1 * * * *", async () => {
   const rates = await scrapeRates();
   if (rates) {
     cachedRates = rates;
-    fs.writeFileSync(ratesFile, JSON.stringify(rates, null, 2));
+    writeJson(ratesFile, rates); // ✅ use helper
   }
 });
 
-// API handler
+// ✅ API handler
 export function getRates(req: Request, res: Response) {
-  if (!cachedRates) return res.status(500).json({ message: "Rates not available" });
+  if (!cachedRates) {
+    return res.status(500).json({ message: "Rates not available" });
+  }
   res.json(cachedRates);
 }

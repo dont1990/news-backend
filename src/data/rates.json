@@ -1,19 +1,19 @@
 {
   "dollar": {
-    "value": "1,029,100",
+    "value": "1,026,800",
     "change": "0"
   },
   "gold": {
-    "value": "88,579,000",
-    "change": "1"
+    "value": "88,198,000",
+    "change": "0"
   },
   "pound": {
-    "value": "",
+    "value": "1,387,100",
     "change": ""
   },
   "coin": {
-    "value": "",
-    "change": ""
+    "value": "932,100,000",
+    "change": "0"
   },
-  "updatedAt": "2025-09-07T12:10:01.587Z"
+  "updatedAt": "2025-09-08T07:22:01.006Z"
 }

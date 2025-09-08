@@ -1,11 +1,11 @@
+// src/controllers/news.controller.ts
 import { Request, Response } from "express";
-import fs from "fs";
-import path from "path";
 import { Article } from "../types/types";
+import { readJson } from "../utils/fileDb";
 
-const articlesFile = path.join(__dirname, "../data/articles.json");
-const articles: Article[] = JSON.parse(fs.readFileSync(articlesFile, "utf-8"));
+const articlesFile = "articles.json";
 
+// ✅ Get all news with filters, pagination, search
 export const getNews = (req: Request, res: Response) => {
   const {
     page = "1",
@@ -16,16 +16,21 @@ export const getNews = (req: Request, res: Response) => {
     dateFilter = "all",
   } = req.query;
 
-  let filtered = articles;
+  // Always read fresh data
+  let filtered;
+  try {
+    const articles = readJson<Article[]>(articlesFile);
+    filtered = [...articles];
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to load articles" });
+  }
 
-  // Filter by category
   if (category) {
     filtered = filtered.filter(
       (a) => a.category.toLowerCase() === String(category).toLowerCase()
     );
   }
 
-  // Filter by search term
   if (search) {
     const term = String(search).toLowerCase();
     filtered = filtered.filter(
@@ -35,7 +40,6 @@ export const getNews = (req: Request, res: Response) => {
     );
   }
 
-  // Filter by date
   if (dateFilter && dateFilter !== "all") {
     const now = new Date();
     filtered = filtered.filter((a) => {
@@ -59,24 +63,56 @@ export const getNews = (req: Request, res: Response) => {
     });
   }
 
-  // Sort by published date
-  filtered = filtered.sort((a, b) => {
-    if (sort === "asc")
-      return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
-    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-  });
+  filtered = filtered.sort((a, b) =>
+    sort === "asc"
+      ? new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+      : new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
 
-  // Pagination
-  const pageNum = parseInt(String(page), 10);
-  const pageSize = parseInt(String(limit), 10);
+  const pageNum = Math.max(1, parseInt(String(page), 10) || 1);
+  const pageSize = Math.max(1, parseInt(String(limit), 10) || 10);
+
   const start = (pageNum - 1) * pageSize;
-  const end = start + pageSize;
-  const paginated = filtered.slice(start, end);
+  const paginated = filtered.slice(start, start + pageSize);
 
   res.json({
     data: paginated,
     page: pageNum,
-    hasMore: end < filtered.length,
+    hasMore: start + pageSize < filtered.length,
     total: filtered.length,
   });
+};
+
+// ✅ Get single news by ID
+export const getNewsById = (req: Request, res: Response) => {
+  const articles = readJson<Article[]>(articlesFile);
+
+  const article = articles.find((a) => a.id === req.params.id);
+
+  if (!article) {
+    return res.status(404).json({ message: "Article not found" });
+  }
+
+  res.json(article);
+};
+
+// For breaking news (latest news)
+export const getBreakingNews = (req: Request, res: Response) => {
+  const { limit = "5" } = req.query;
+  let articles: Article[] = readJson<Article[]>(articlesFile);
+
+  articles = articles.sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+
+  res.json(articles.slice(0, Number(limit)));
+};
+
+// For trending news (mock: most recent or random)
+export const getTrendingNews = (req: Request, res: Response) => {
+  const { limit = "5" } = req.query;
+  let articles: Article[] = readJson<Article[]>(articlesFile);
+
+  // Here we just return the first few articles as trending
+  res.json(articles.slice(0, Number(limit)));
 };

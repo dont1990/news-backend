@@ -21,8 +21,8 @@ export async function scrapeRates(): Promise<Rates | null> {
     const rates: Rates = {
       dollar: parseRate("#l-price_dollar_rl"),
       gold: parseRate("#l-geram18"),
-      pound: parseRate("#l-price_pound_rl"),
-      coin: parseRate("#l-sell_coin"),
+      pound: parseRate('tr[data-market-nameslug="price_gbp"] td.market-price'),
+      coin: parseRate("#l-sekee"),
       updatedAt: new Date(),
     };
 

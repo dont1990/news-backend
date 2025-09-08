@@ -10,7 +10,8 @@
     "imageUrl": "/climate-summit-leaders.png",
     "source": "Global News Network",
     "sourceLink": "https://globalnews.com",
-    "readTime": "۵ دقیقه"
+    "readTime": "۵ دقیقه",
+    "views": 0
   },
   {
     "id": "2",
@@ -23,7 +24,8 @@
     "imageUrl": "/ai-technology-safety-meeting.png",
     "source": "Tech Today",
     "sourceLink": "https://techtoday.com",
-    "readTime": "۳ دقیقه"
+    "readTime": "۳ دقیقه",
+    "views": 20
   },
   {
     "id": "3",
@@ -36,7 +38,8 @@
     "imageUrl": "/stock-market-trading-floor.png",
     "source": "Financial Times",
     "sourceLink": "https://ft.com",
-    "readTime": "۴ دقیقه"
+    "readTime": "۴ دقیقه",
+    "views": 50
   },
   {
     "id": "4",
@@ -49,7 +52,8 @@
     "imageUrl": "/medical-research-lab.png",
     "source": "Medical Journal",
     "sourceLink": "https://medicaljournal.com",
-    "readTime": "۶ دقیقه"
+    "readTime": "۶ دقیقه",
+    "views": 4
   },
   {
     "id": "5",
@@ -62,7 +66,8 @@
     "imageUrl": "/mars-rover-space-exploration.png",
     "source": "Space News",
     "sourceLink": "https://spacenews.com",
-    "readTime": "۴ دقیقه"
+    "readTime": "۴ دقیقه",
+    "views": 60
   },
   {
     "id": "6",
@@ -75,7 +80,8 @@
     "imageUrl": "/sports-championship-stadium-crowd.png",
     "source": "Sports Central",
     "sourceLink": "https://sportscentral.com",
-    "readTime": "۲ دقیقه"
+    "readTime": "۲ دقیقه",
+    "views": 54
   },
   {
     "id": "7",
@@ -88,7 +94,8 @@
     "imageUrl": "/film-festival-award.png",
     "source": "Movie News",
     "sourceLink": "https://movienews.com",
-    "readTime": "۳ دقیقه"
+    "readTime": "۳ دقیقه",
+    "views": 23
   },
   {
     "id": "8",
@@ -101,7 +108,8 @@
     "imageUrl": "/air-pollution-city.png",
     "source": "Green World",
     "sourceLink": "https://greenworld.com",
-    "readTime": "۴ دقیقه"
+    "readTime": "۴ دقیقه",
+    "views": 5
   },
   {
     "id": "9",
@@ -114,7 +122,8 @@
     "imageUrl": "/solar-energy-tech.png",
     "source": "Energy Today",
     "sourceLink": "https://energytoday.com",
-    "readTime": "۵ دقیقه"
+    "readTime": "۵ دقیقه",
+    "views": 2
   },
   {
     "id": "10",
@@ -127,7 +136,8 @@
     "imageUrl": "/chess-tournament.png",
     "source": "Chess World",
     "sourceLink": "https://chessworld.com",
-    "readTime": "۳ دقیقه"
+    "readTime": "۳ دقیقه",
+    "views": 0
   },
   {
     "id": "11",
@@ -140,7 +150,8 @@
     "imageUrl": "/blockchain-finance.png",
     "source": "Tech Finance",
     "sourceLink": "https://techfinance.com",
-    "readTime": "۵ دقیقه"
+    "readTime": "۵ دقیقه",
+    "views": 75
   },
   {
     "id": "12",
@@ -153,7 +164,8 @@
     "imageUrl": "/esports-tournament.png",
     "source": "eSports News",
     "sourceLink": "https://esportsnews.com",
-    "readTime": "۴ دقیقه"
+    "readTime": "۴ دقیقه",
+    "views": 56766
   },
   {
     "id": "13",
@@ -166,7 +178,8 @@
     "imageUrl": "/deep-sea-exploration.png",
     "source": "Oceanic Journal",
     "sourceLink": "https://oceanicjournal.com",
-    "readTime": "۶ دقیقه"
+    "readTime": "۶ دقیقه",
+    "views": 756
   },
   {
     "id": "14",
@@ -179,7 +192,8 @@
     "imageUrl": "/iranian-film-award.png",
     "source": "Film News",
     "sourceLink": "https://filmnews.com",
-    "readTime": "۳ دقیقه"
+    "readTime": "۳ دقیقه",
+    "views": 6
   },
   {
     "id": "15",
@@ -192,6 +206,7 @@
     "imageUrl": "/energy-saving-building.png",
     "source": "Green Living",
     "sourceLink": "https://greenliving.com",
-    "readTime": "۵ دقیقه"
+    "readTime": "۵ دقیقه",
+    "views": 98
   }
 ]
