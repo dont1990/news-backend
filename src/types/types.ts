@@ -4,7 +4,7 @@ export interface Article {
   category: string;
   description: string;
   author: string;
-  publishedAt: string; 
+  publishedAt: string;
   readTime: string;
   content: string;
   imageUrl?: string;
@@ -20,7 +20,7 @@ export interface Rate {
 
 export interface Rates {
   dollar: Rate;
-  pound: Rate;
+  tsetmc: Rate;
   gold: Rate;
   coin: Rate;
   updatedAt: Date;

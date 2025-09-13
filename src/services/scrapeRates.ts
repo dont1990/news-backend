@@ -1,4 +1,3 @@
-// src/services/scrapeRates.ts
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 import { Rate, Rates } from "../types/types";
@@ -10,18 +9,15 @@ export async function scrapeRates(): Promise<Rates | null> {
     const $ = cheerio.load(html);
 
     function parseRate(selector: string): Rate {
-      const raw = $(selector).text().trim();
-      const match = raw.match(/[\d,]+/g);
-      return {
-        value: match ? match[0] : "",
-        change: match && match[1] ? match[1] : "",
-      };
+      const price = $(selector).find(".info-price").text().trim();
+      const change = $(selector).find(".info-change").text().trim();
+      return { value: price, change };
     }
 
     const rates: Rates = {
       dollar: parseRate("#l-price_dollar_rl"),
       gold: parseRate("#l-geram18"),
-      pound: parseRate('tr[data-market-nameslug="price_gbp"] td.market-price'),
+      tsetmc: parseRate("#l-gc30"), // بورس index
       coin: parseRate("#l-sekee"),
       updatedAt: new Date(),
     };
