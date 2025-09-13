@@ -7,7 +7,7 @@ const articlesFile = "articles.json";
 
 let cachedArticles: Article[] = [];
 
-cron.schedule("*/5 * * * * *", async () => { // every 10 minutes
+cron.schedule("*/30 * * * * *", async () => { // every 10 minutes
   const news = await scrapeNews();
   if (news.length > 0) {
     cachedArticles = news;
