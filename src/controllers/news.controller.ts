@@ -2,8 +2,21 @@
 import { Request, Response } from "express";
 import { Article } from "../types/types";
 import { readJson } from "../utils/fileDb";
+import { getCachedArticles } from "./news.scraper";
 
 const articlesFile = "articles.json";
+
+// Helper to get latest articles (from cache or file)
+function getArticles(): Article[] {
+  const cached = getCachedArticles();
+  if (cached && cached.length > 0) return cached;
+
+  try {
+    return readJson<Article[]>(articlesFile);
+  } catch {
+    return [];
+  }
+}
 
 // ✅ Get all news with filters, pagination, search
 export const getNews = (req: Request, res: Response) => {
@@ -15,15 +28,8 @@ export const getNews = (req: Request, res: Response) => {
     category,
     dateFilter = "all",
   } = req.query;
-
-  // Always read fresh data
-  let filtered;
-  try {
-    const articles = readJson<Article[]>(articlesFile);
-    filtered = [...articles];
-  } catch (err) {
-    return res.status(500).json({ message: "Failed to load articles" });
-  }
+console.log('first')
+  let filtered: Article[] = [...getArticles()];
 
   if (category) {
     filtered = filtered.filter(
@@ -85,7 +91,7 @@ export const getNews = (req: Request, res: Response) => {
 
 // ✅ Get single news by ID
 export const getNewsById = (req: Request, res: Response) => {
-  const articles = readJson<Article[]>(articlesFile);
+  const articles = getArticles();
 
   const article = articles.find((a) => a.id === req.params.id);
 
@@ -99,9 +105,7 @@ export const getNewsById = (req: Request, res: Response) => {
 // For breaking news (latest news)
 export const getBreakingNews = (req: Request, res: Response) => {
   const { limit = "5" } = req.query;
-  let articles: Article[] = readJson<Article[]>(articlesFile);
-
-  articles = articles.sort(
+  const articles: Article[] = getArticles().sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
 
@@ -111,8 +115,9 @@ export const getBreakingNews = (req: Request, res: Response) => {
 // For trending news (mock: most recent or random)
 export const getTrendingNews = (req: Request, res: Response) => {
   const { limit = "5" } = req.query;
-  let articles: Article[] = readJson<Article[]>(articlesFile);
+  const articles: Article[] = getArticles();
 
-  // Here we just return the first few articles as trending
-  res.json(articles.slice(0, Number(limit)));
+  // Example: pick random trending articles
+  const shuffled = [...articles].sort(() => Math.random() - 0.5);
+  res.json(shuffled.slice(0, Number(limit)));
 };
