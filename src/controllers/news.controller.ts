@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Article } from "../types/types";
 import { getCachedArticles } from "../utils/cronJob";
+import { PAGE_LIMIT } from "../constants/constant";
 
 function getArticles(): Article[] {
   return getCachedArticles();
@@ -8,7 +9,7 @@ function getArticles(): Article[] {
 
 // Get all news with filters, pagination, search
 export const getNews = (req: Request, res: Response) => {
-  const { page = "1", limit = "10", search = "", sort = "desc", category, dateFilter = "all" } = req.query;
+  const { page = "1", limit = PAGE_LIMIT, search = "", sort = "desc", category, dateFilter = "all" } = req.query;
 
   let filtered: Article[] = [...getArticles()];
 
@@ -78,7 +79,7 @@ export const getNewsById = (req: Request, res: Response) => {
 
 // Breaking news (latest)
 export const getBreakingNews = (req: Request, res: Response) => {
-  const { limit = "5" } = req.query;
+  const { limit = PAGE_LIMIT } = req.query;
   const articles: Article[] = getArticles().sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
@@ -87,7 +88,7 @@ export const getBreakingNews = (req: Request, res: Response) => {
 
 // Trending news (random example)
 export const getTrendingNews = (req: Request, res: Response) => {
-  const { limit = "5" } = req.query;
+  const { limit = PAGE_LIMIT } = req.query;
   const articles: Article[] = [...getArticles()];
   const shuffled = articles.sort(() => Math.random() - 0.5);
   res.json(shuffled.slice(0, Number(limit)));

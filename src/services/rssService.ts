@@ -2,51 +2,59 @@ import Parser from "rss-parser";
 import { Article } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { feeds } from "../config/feedsConfig";
+import { writeJson } from "../utils/fileDb";
 
 const parser = new Parser<Article>({
-  customFields: { item: ["creator", "category", "categories", "media:content"] }
+  customFields: {
+    item: [
+      "creator",
+      "category",
+      "categories",
+      "media:content",
+      "itunes:summary",
+      "itunes:image",
+      "enclosure",
+      "itunes:duration",
+    ],
+  },
 });
 
 export async function scrapeNews(): Promise<Article[]> {
   const allArticles: Article[] = [];
+  const rssCategories = new Set<string>();
 
   for (const feed of feeds) {
     try {
       const rss = await parser.parseURL(feed.url);
 
-      const articles = rss.items.map(item => {
-        // ✅ Extract category safely
-        let category = "همه";
+      const articles = rss.items.map((item) => {
+        let category = "همه"; // fallback
 
         if (item.categories?.length) {
-          const firstCat = item.categories[0];
-          if (typeof firstCat === "string") {
-            category = firstCat;
-          } else if ((firstCat as any)?._) {
-            category = (firstCat as any)._;
-          }
+          let firstCat = item.categories[0];
+          if (typeof firstCat === "string")
+            firstCat = firstCat.split(">")[0].trim();
+          else if ((firstCat as any)?._)
+            firstCat = (firstCat as any)._.split(">")[0].trim();
+          category = firstCat;
         } else if (item.category) {
-          if (typeof item.category === "string") {
-            category = item.category;
-          } else if ((item.category as any)?._) {
-            category = (item.category as any)._;
-          }
+          let cat =
+            typeof item.category === "string"
+              ? item.category
+              : (item.category as any)?._;
+          if (cat) category = cat.split(">")[0].trim();
         } else if (feed.category) {
-          category = feed.category;
+          category = feed.category.split(">")[0].trim();
         }
 
-        // ✅ Extract image
-        let imageUrl = "";
-        if ((item as any)["media:content"]?.["$"]?.url) {
-          imageUrl = (item as any)["media:content"]["$"].url;
-        } else if ((item as any).enclosure?.url) {
-          imageUrl = (item as any).enclosure.url;
-        }
+        rssCategories.add(category); // <-- track all categories
 
+        // ... rest of your article mapping
         return {
           id: uuid(),
-          title: item.title || item.name || "No title",
-          description: item.contentSnippet || "",
+          title: item.title || "No title",
+          description:
+            item.contentSnippet || item["itunes:summary"] || item.content || "",
           author: item.creator || feed.source,
           category,
           subcategory: feed.subcategory,
@@ -55,21 +63,29 @@ export async function scrapeNews(): Promise<Article[]> {
             : new Date().toISOString(),
           readTime: "3",
           content: item.content || "",
-          imageUrl,
+          imageUrl:
+            (item as any)["itunes:image"]?.href ||
+            (item as any)["media:content"]?.["$"]?.url ||
+            (item as any).enclosure?.url ||
+            "",
           source: feed.source,
-          sourceLink: item.link || ""
+          sourceLink: item.link || "",
         };
       });
 
       allArticles.push(...articles);
-      console.log(`📰 Fetched ${articles.length} articles from ${feed.source}`);
     } catch (err) {
       console.error(`❌ Failed to fetch ${feed.source}:`, err);
     }
   }
 
-  // ✅ Deduplicate by sourceLink
-  const deduped = Array.from(new Map(allArticles.map(a => [a.sourceLink, a])).values());
+  // Deduplicate by sourceLink
+  const deduped = Array.from(
+    new Map(allArticles.map((a) => [a.sourceLink, a])).values()
+  );
+
+  // Optional: store rssCategories somewhere for filters
+  writeJson("rssCategories.json", Array.from(rssCategories));
 
   return deduped;
 }
