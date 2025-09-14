@@ -1,14 +1,14 @@
 export interface Article {
   id: string;
   title: string;
-  category: string;
   description: string;
-  author: string;
+  category?: string;
+  subcategory?: string;
   publishedAt: string;
-  readTime: string;
-  content: string;
+  readTime?: string;
+  content?: string;
   imageUrl?: string;
-  source?: string;
+  source: string;
   sourceLink?: string;
 }
 
