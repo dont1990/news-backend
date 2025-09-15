@@ -3,6 +3,7 @@ import { Article } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { feeds } from "../config/feedsConfig";
 import { writeJson } from "../utils/fileDb";
+import { extractImage } from "../helper/extractImage";
 
 const parser = new Parser<Article>({
   customFields: {
@@ -63,11 +64,7 @@ export async function scrapeNews(): Promise<Article[]> {
             : new Date().toISOString(),
           readTime: "3",
           content: item.content || "",
-          imageUrl:
-            (item as any)["itunes:image"]?.href ||
-            (item as any)["media:content"]?.["$"]?.url ||
-            (item as any).enclosure?.url ||
-            "",
+          imageUrl: extractImage(item),
           source: feed.source,
           sourceLink: item.link || "",
         };
