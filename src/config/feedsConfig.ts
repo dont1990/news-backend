@@ -1,9 +1,4 @@
-export interface FeedNews {
-  url: string;
-  source: string;
-  category: string;
-  subcategory?: string;
-}
+import { FeedNews } from "../types/types";
 
 export const feeds: FeedNews[] = [
   // Mashregh

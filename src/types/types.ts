@@ -25,3 +25,10 @@ export interface Rates {
   coin: Rate;
   updatedAt: Date;
 }
+
+export interface FeedNews {
+  url: string;
+  source: string;
+  category: string;
+  subcategory?: string;
+}
