@@ -6,7 +6,7 @@ export interface Article {
   subcategory?: string;
   publishedAt: string;
   readTime?: string;
-  content?: string;
+  // content?: string;
   imageUrl?: string;
   source: string;
   sourceLink?: string;

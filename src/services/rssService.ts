@@ -93,7 +93,7 @@ import { scrapeIrna } from "../scrapers/irna";
 import { scrapeIsna } from "../scrapers/isna";
 import { scrapeMashregh } from "../scrapers/mashregh";
 import { dedupeArticles } from "../utils/helper/dedupeArticles";
-import { Article } from "../types/types";
+import { Article, FeedNews } from "../types/types";
 
 export async function scrapeNews(): Promise<Article[]> {
   const all: Article[] = [];
@@ -103,12 +103,14 @@ export async function scrapeNews(): Promise<Article[]> {
       console.log(`📰 Scraping ${feed.source} (${feed.url})`);
       let articles: Article[] = [];
 
-      if (feed.source === "ISNA") {
+      if (feed.source === "ایسنا") {
         articles = await scrapeIsna(feed);
-      } else if (feed.source === "Mashregh") {
+      } else if (feed.source === "مشرق") {
         articles = await scrapeMashregh(feed);
-      } else if (feed.source === "IRNA") {
+      } else if (feed.source === "ایرنا") {
         articles = await scrapeIrna(feed);
+      } else if (feed.source === "شهر خبر") {
+        articles = await scrapeShahreKhabar(feed);
       } else {
         articles = await scrapeGeneric(feed); // fallback
       }
@@ -122,3 +124,8 @@ export async function scrapeNews(): Promise<Article[]> {
   return dedupeArticles(all);
 }
 
+function scrapeShahreKhabar(
+  feed: FeedNews
+): Article[] | PromiseLike<Article[]> {
+  throw new Error("Function not implemented.");
+}

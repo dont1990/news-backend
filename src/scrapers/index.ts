@@ -2,6 +2,7 @@ import Parser from "rss-parser";
 import { Article, FeedNews } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { extractImage } from "../utils/helper/extractImage";
+import { getCategory } from "../utils/helper/getCategory";
 
 export async function scrapeGeneric(feed: FeedNews): Promise<Article[]> {
   const parser = new Parser<Article>({
@@ -21,13 +22,7 @@ export async function scrapeGeneric(feed: FeedNews): Promise<Article[]> {
     const rss = await parser.parseURL(feed.url);
 
     return rss.items.map((item) => {
-      let category = feed.category || "همه";
-      if (item.category) {
-        category =
-          typeof item.category === "string"
-            ? item.category.split(">")[0].trim()
-            : (item.category as any)?._;
-      }
+      const category = getCategory(item, feed);
 
       const imageUrl =
         (item as any).enclosure?.url ||
@@ -47,7 +42,6 @@ export async function scrapeGeneric(feed: FeedNews): Promise<Article[]> {
           ? new Date(item.pubDate).toISOString()
           : new Date().toISOString(),
         readTime: "3",
-        content: item.content || "",
         imageUrl,
         source: feed.source,
         sourceLink: item.link || "",
