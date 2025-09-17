@@ -76,7 +76,10 @@ export function stemPersian(word: string): string {
     }
   }
 
-  // remove trailing punctuation just in case
+  // 🔥 remove Persian & English punctuation
+  w = w.replace(/[،؛؟!.,:؛«»"()\[\]{}]/g, "");
+
+  // remove extra pipes/slashes/spaces
   w = w.replace(/^[\s\|:\/]+|[\s\|:\/]+$/g, "").trim();
 
   return w;
