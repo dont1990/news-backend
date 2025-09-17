@@ -2,6 +2,8 @@ import Parser from "rss-parser";
 import { Article, FeedNews } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { getCategory } from "../utils/helper/getCategory";
+import { calcReadTime } from "../utils/helper/calcReadTime";
+import { extractTags } from "../utils/helper/extractTags";
 
 const parser = new Parser<Article>({
   customFields: {
@@ -26,10 +28,11 @@ export async function scrapeShahreKhabar(feed: FeedNews): Promise<Article[]> {
         publishedAt: item.pubDate
           ? new Date(item.pubDate).toISOString()
           : new Date().toISOString(),
-        readTime: "3",
+        readTime: calcReadTime(item.contentSnippet || item.content || ""),
         imageUrl: item.enclosure?.url || "",
         source: feed.source,
         sourceLink: item.link || "",
+        tags: extractTags(`${item.title} ${item.contentSnippet}`),
       };
     });
 

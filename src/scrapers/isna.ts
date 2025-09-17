@@ -3,6 +3,8 @@ import { Article, FeedNews } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { extractImage } from "../utils/helper/extractImage";
 import { getCategory } from "../utils/helper/getCategory";
+import { calcReadTime } from "../utils/helper/calcReadTime";
+import { extractTags } from "../utils/helper/extractTags";
 
 const parser = new Parser<Article>({
   customFields: {
@@ -17,7 +19,6 @@ export async function scrapeIsna(feed: FeedNews): Promise<Article[]> {
     const articles: Article[] = rss.items.map((item) => {
       // handle category
       const category = getCategory(item, feed);
-
 
       // use enclosure or media:content for images
       const imageUrl =
@@ -35,10 +36,11 @@ export async function scrapeIsna(feed: FeedNews): Promise<Article[]> {
         publishedAt: item.pubDate
           ? new Date(item.pubDate).toISOString()
           : new Date().toISOString(),
-        readTime: "3",
+        readTime: calcReadTime(item.contentSnippet || item.content || ""),
         imageUrl: extractImage(item) || imageUrl,
         source: feed.source,
         sourceLink: item.link || "",
+        tags: extractTags(`${item.title} ${item.contentSnippet}`),
       };
     });
 

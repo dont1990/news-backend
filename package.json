@@ -18,6 +18,7 @@
     "cors": "^2.8.5",
     "cron": "^4.3.3",
     "express": "^5.1.0",
+    "keyword-extractor": "^0.0.28",
     "node-cron": "^4.2.1",
     "node-fetch": "^3.3.2",
     "rss-parser": "^3.13.0",

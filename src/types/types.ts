@@ -10,6 +10,7 @@ export interface Article {
   imageUrl?: string;
   source: string;
   sourceLink?: string;
+  tags?: string[];
 }
 
 // src/types.ts

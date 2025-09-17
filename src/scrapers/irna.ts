@@ -4,6 +4,8 @@ import { Article, FeedNews } from "../types/types";
 import { v4 as uuid } from "uuid";
 import { extractImage } from "../utils/helper/extractImage";
 import { getCategory } from "../utils/helper/getCategory";
+import { calcReadTime } from "../utils/helper/calcReadTime";
+import { extractTags } from "../utils/helper/extractTags";
 
 const parser = new Parser<Article>({
   customFields: {
@@ -17,7 +19,6 @@ export async function scrapeIrna(feed: FeedNews): Promise<Article[]> {
 
     return rss.items.map((item) => {
       const category = getCategory(item, feed);
-
 
       const imageUrl =
         (item as any).enclosure?.url ||
@@ -34,10 +35,11 @@ export async function scrapeIrna(feed: FeedNews): Promise<Article[]> {
         publishedAt: item.pubDate
           ? new Date(item.pubDate).toISOString()
           : new Date().toISOString(),
-        readTime: "3",
+        readTime: calcReadTime(item.contentSnippet || item.content || ""),
         imageUrl: extractImage(item) || imageUrl,
         source: feed.source,
         sourceLink: item.link || "",
+        tags: extractTags(`${item.title} ${item.contentSnippet}`),
       };
     });
   } catch (err) {
