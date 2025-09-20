@@ -9,28 +9,47 @@ function getArticles(): Article[] {
 
 // Get all news with filters, pagination, search
 export const getNews = (req: Request, res: Response) => {
-  const { page = "1", limit = PAGE_LIMIT, search = "", sort = "desc", category, dateFilter = "all" } = req.query;
+  const {
+    page = "1",
+    limit = PAGE_LIMIT,
+    search = "",
+    sort = "desc",
+    category,
+    dateFilter = "all",
+    tags = [],
+  } = req.query;
 
   let filtered: Article[] = [...getArticles()];
 
   // Category filter
   if (category) {
     const cat = String(category).toLowerCase();
-    filtered = filtered.filter(a => a.category?.toLowerCase() === cat);
+    filtered = filtered.filter((a) => a.category?.toLowerCase() === cat);
   }
 
   // Search
   if (search) {
     const term = String(search).toLowerCase();
     filtered = filtered.filter(
-      a => a.title.toLowerCase().includes(term) || a.description.toLowerCase().includes(term)
+      (a) =>
+        a.title.toLowerCase().includes(term) ||
+        a.description.toLowerCase().includes(term)
+    );
+  }
+  // Hashtags
+  if (tags.length) {
+    const tagArray = String(tags)
+      .split(",")
+      .map((t) => t.toLowerCase().trim());
+    filtered = filtered.filter((a) =>
+      a.tags?.some((tag) => tagArray.includes(tag.toLowerCase()))
     );
   }
 
   // Date filter
   if (dateFilter && dateFilter !== "all") {
     const now = new Date();
-    filtered = filtered.filter(a => {
+    filtered = filtered.filter((a) => {
       const pub = new Date(a.publishedAt);
       switch (String(dateFilter)) {
         case "today":
@@ -66,13 +85,13 @@ export const getNews = (req: Request, res: Response) => {
     data: paginated,
     page: pageNum,
     hasMore: start + pageSize < filtered.length,
-    total: filtered.length
+    total: filtered.length,
   });
 };
 
 // Get single news by ID
 export const getNewsById = (req: Request, res: Response) => {
-  const article = getArticles().find(a => a.id === req.params.id);
+  const article = getArticles().find((a) => a.id === req.params.id);
   if (!article) return res.status(404).json({ message: "Article not found" });
   res.json(article);
 };
@@ -81,7 +100,8 @@ export const getNewsById = (req: Request, res: Response) => {
 export const getBreakingNews = (req: Request, res: Response) => {
   const { limit = PAGE_LIMIT } = req.query;
   const articles: Article[] = getArticles().sort(
-    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
   res.json(articles.slice(0, Number(limit)));
 };
