@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Article } from "../types/types";
 import { getCachedArticles } from "../utils/cronJob";
-import { PAGE_LIMIT } from "../constants/constant";
+import { PAGE_LIMIT } from "../constants/global";
 
 function getArticles(): Article[] {
   return getCachedArticles();

@@ -17,6 +17,7 @@
     "cheerio": "^1.1.2",
     "cors": "^2.8.5",
     "cron": "^4.3.3",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "keyword-extractor": "^0.0.28",
     "node-cron": "^4.2.1",
