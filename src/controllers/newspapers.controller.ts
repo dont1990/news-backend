@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { scrapeJaaar } from "../services/newspapersService";
+import { scrapeJaaar } from "../services/scrapeNewspapers";
 
 export async function getNewspapers(req: Request, res: Response) {
   try {

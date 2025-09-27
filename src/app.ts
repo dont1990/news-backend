@@ -7,6 +7,7 @@ import newsletterRoutes from "./routes/newsletter.routes";
 import categoryRoutes from "./routes/category.routes";
 import weatherRoutes from "./routes/weather.routes";
 import newspapersRoutes from "./routes/newspapers.routes";
+import worldClockRoutes from "./routes/worldClock.routes";
 
 
 
@@ -21,6 +22,7 @@ app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/newspapers", newspapersRoutes);
+app.use("/api/world-clock", worldClockRoutes);
 
 
 export default app;

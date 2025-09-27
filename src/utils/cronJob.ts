@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { scrapeNews } from "../services/rssService";
+import { scrapeNews } from "../services/scrapeNews";
 import { writeJson, readJson } from "./fileDb";
 import { Article } from "../types/types";
 
