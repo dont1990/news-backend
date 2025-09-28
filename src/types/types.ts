@@ -42,3 +42,8 @@ export type Newspaper = {
   link: string;
   date: string;
 };
+
+export interface TagStat {
+  tag: string;
+  clicks: number;
+}

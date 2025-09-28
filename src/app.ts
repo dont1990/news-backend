@@ -8,6 +8,7 @@ import categoryRoutes from "./routes/category.routes";
 import weatherRoutes from "./routes/weather.routes";
 import newspapersRoutes from "./routes/newspapers.routes";
 import worldClockRoutes from "./routes/worldClock.routes";
+import tagRoutes from "./routes/tags.routes";
 
 
 
@@ -23,6 +24,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/newspapers", newspapersRoutes);
 app.use("/api/world-clock", worldClockRoutes);
+app.use("/api/tags", tagRoutes);
 
 
 export default app;
