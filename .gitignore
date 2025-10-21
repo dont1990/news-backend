@@ -17,8 +17,8 @@ logs
 *.log
 
 # env files (do not commit sensitive keys)
-.env
-.env.*
+# .env
+# .env.*
 
 # misc
 .DS_Store
