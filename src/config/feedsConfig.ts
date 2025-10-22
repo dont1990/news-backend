@@ -80,41 +80,41 @@ export const feeds: FeedNews[] = [
   // },
 
   // ShahreKhabar
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=3",
-    source: "شهر خبر",
-    category: "سیاسی",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=8",
-    source: "شهر خبر",
-    category: "ورزشی",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=4",
-    source: "شهر خبر",
-    category: "اقتصادی",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=5",
-    source: "شهر خبر",
-    category: "حوادث",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=13",
-    source: "شهر خبر",
-    category: "فرهنگی",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=7",
-    source: "شهر خبر",
-    category: "هنری",
-  },
-  {
-    url: "https://www.shahrekhabar.com/rss.jsp?type=2",
-    source: "شهر خبر",
-    category: "جهان",
-  },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=3",
+  //   source: "شهر خبر",
+  //   category: "سیاسی",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=8",
+  //   source: "شهر خبر",
+  //   category: "ورزشی",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=4",
+  //   source: "شهر خبر",
+  //   category: "اقتصادی",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=5",
+  //   source: "شهر خبر",
+  //   category: "حوادث",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=13",
+  //   source: "شهر خبر",
+  //   category: "فرهنگی",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=7",
+  //   source: "شهر خبر",
+  //   category: "هنری",
+  // },
+  // {
+  //   url: "https://www.shahrekhabar.com/rss.jsp?type=2",
+  //   source: "شهر خبر",
+  //   category: "جهان",
+  // },
 
   // KhabarOnline - فناوری
 {
