@@ -149,7 +149,7 @@ export const getTrendingNews = (req: Request, res: Response) => {
 // --- Hero Section News (4 important) ---
 export const getHeroNews = (req: Request, res: Response) => {
   // take top 4 breaking news
-  const hero = sortByDateDesc(getCachedArticles()).slice(0, 4);
+  const hero = sortByDateDesc(getCachedArticles()).slice(0, 3);
   res.json({ data: hero });
 };
 
