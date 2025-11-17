@@ -16,8 +16,9 @@ try {
 }
 
 // ✅ Cron job → update rates every 1 minute
-cron.schedule("*/20 * * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   const rates = await scrapeRates();
+  console.log(rates)
   if (rates) {
     cachedRates = rates;
     writeJson(ratesFile, rates); // ✅ use helper
