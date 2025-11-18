@@ -16,7 +16,7 @@ export const getNews = (req: Request, res: Response) => {
     page = "1",
     limit = PAGE_LIMIT,
     search = "",
-    sort = "desc",
+    sort = "latest",
     category,
     dateFilter = "all",
     tags = [],
@@ -73,7 +73,11 @@ export const getNews = (req: Request, res: Response) => {
 
   // Sort
   filtered =
-    sort === "asc" ? sortByDateAsc(filtered) : sortByDateDesc(filtered);
+    sort === "latest"
+      ? sortByDateDesc(filtered)
+      : sort === "oldest"
+      ? sortByDateAsc(filtered)
+      : filtered;
 
   // Pagination
   const pageNum = Math.max(1, parseInt(String(page), 10));
