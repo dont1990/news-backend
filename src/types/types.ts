@@ -9,6 +9,7 @@ export interface Article {
   imageUrl?: string;
   source: string;
   sourceLink?: string;
+  guid?: string;
   tags?: string[];
   views?: number;
 }

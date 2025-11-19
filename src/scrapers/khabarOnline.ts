@@ -5,6 +5,7 @@ import { Article, FeedNews } from "../types/types";
 import { getCategory } from "../utils/helper/getCategory";
 import { calcReadTime } from "../utils/helper/calcReadTime";
 import { extractTags } from "../utils/helper/extractTags";
+import { getSource } from "../utils/helper/getSource";
 
 const parser = new Parser<any>({
   customFields: {
@@ -24,8 +25,7 @@ export async function scrapeKhabarOnline(feed: FeedNews): Promise<Article[]> {
       const imageUrl = item.enclosure?.url || "";
 
       // Description fallback chain
-      const description =
-        item.description || item["content:encoded"] || "";
+      const description = item.description || item["content:encoded"] || "";
 
       return {
         id: uuid(),
@@ -38,8 +38,8 @@ export async function scrapeKhabarOnline(feed: FeedNews): Promise<Article[]> {
           : new Date().toISOString(),
         readTime: calcReadTime(description),
         imageUrl,
-        source: item.source || feed.source,
-        sourceLink: item.link || "",
+        source: getSource(item.source, feed.source),
+        sourceLink: item.link || item.guid || "",
         tags: extractTags(`${item.title} ${description}`),
       };
     });
