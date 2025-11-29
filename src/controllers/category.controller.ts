@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { readJson } from "../utils/fileDb";
-import { PAGE_LIMIT } from "../constants/global";
+import { PER_PAGE } from "../constants/global";
 
 // controllers/category.controller.ts
 export async function getCategories(req: Request, res: Response) {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || PAGE_LIMIT;
+    const limit = parseInt(req.query.limit as string) || PER_PAGE;
 
     const categories: string[] = await readJson("rssCategories.json");
 

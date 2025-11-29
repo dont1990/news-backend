@@ -1,1 +1,1 @@
-export const PAGE_LIMIT = 10;
+export const PER_PAGE = 10;

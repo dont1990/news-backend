@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import { Article } from "../types/types";
 import { getCachedArticles } from "../utils/cronJob";
-import { PAGE_LIMIT } from "../constants/global";
-import { sortByDateAsc, sortByDateDesc } from "../utils/helper/sortArticles";
+import { PER_PAGE } from "../constants/global";
+import {
+  sortByDateAsc,
+  sortByDateDesc,
+  sortByViewsDesc,
+} from "../utils/helper/sortArticles";
 import { normalizePersian } from "../utils/helper/normalizePersian";
 import stringSimilarity from "string-similarity";
 
@@ -14,7 +18,7 @@ function getArticles(): Article[] {
 export const getNews = (req: Request, res: Response) => {
   const {
     page = "1",
-    limit = PAGE_LIMIT,
+    limit = PER_PAGE,
     search = "",
     sort = "latest",
     category,
@@ -77,6 +81,8 @@ export const getNews = (req: Request, res: Response) => {
       ? sortByDateDesc(filtered)
       : sort === "oldest"
       ? sortByDateAsc(filtered)
+      : sort === "views"
+      ? sortByViewsDesc(filtered)
       : filtered;
 
   // Pagination
@@ -102,50 +108,64 @@ export const getNewsById = (req: Request, res: Response) => {
 
 // --- Breaking News ---
 export const getBreakingNews = (req: Request, res: Response) => {
-  const { limit = PAGE_LIMIT } = req.query;
+  const { limit = PER_PAGE } = req.query;
   const breaking = sortByDateDesc(getCachedArticles()).slice(
     0,
-    parseInt(String(limit), PAGE_LIMIT)
+    parseInt(String(limit), PER_PAGE)
   );
   res.json({ data: breaking });
 };
 
 // --- Trending News ---
+// export const getTrendingNews = (req: Request, res: Response) => {
+//   const { limit = PER_PAGE } = req.query;
+//   const articles = getCachedArticles();
+
+//   const groups: Article[][] = [];
+
+//   for (const article of articles) {
+//     const normTitle = normalizePersian(article.title);
+
+//     let foundGroup = false;
+
+//     for (const group of groups) {
+//       const representative = normalizePersian(group[0].title);
+//       const similarity = stringSimilarity.compareTwoStrings(
+//         normTitle,
+//         representative
+//       );
+
+//       if (similarity >= 0.7) {
+//         group.push(article);
+//         foundGroup = true;
+//         break;
+//       }
+//     }
+
+//     if (!foundGroup) {
+//       groups.push([article]);
+//     }
+//   }
+
+//   // Pick groups that appear in multiple sources
+//   const trending = groups
+//     .filter((g) => g.length > 1)
+//     .map((g) => g[0]) // take representative article
+//     .slice(0, parseInt(String(limit), PER_PAGE));
+
+//   res.json({ data: trending });
+// };
+
 export const getTrendingNews = (req: Request, res: Response) => {
-  const { limit = PAGE_LIMIT } = req.query;
+  const { limit = PER_PAGE } = req.query;
+
   const articles = getCachedArticles();
 
-  const groups: Article[][] = [];
-
-  for (const article of articles) {
-    const normTitle = normalizePersian(article.title);
-
-    let foundGroup = false;
-
-    for (const group of groups) {
-      const representative = normalizePersian(group[0].title);
-      const similarity = stringSimilarity.compareTwoStrings(
-        normTitle,
-        representative
-      );
-
-      if (similarity >= 0.7) {
-        group.push(article);
-        foundGroup = true;
-        break;
-      }
-    }
-
-    if (!foundGroup) {
-      groups.push([article]);
-    }
-  }
-
-  // Pick groups that appear in multiple sources
-  const trending = groups
-    .filter((g) => g.length > 1)
-    .map((g) => g[0]) // take representative article
-    .slice(0, parseInt(String(limit), PAGE_LIMIT));
+  // Sort by views (descending)
+  const trending = sortByViewsDesc(articles).slice(
+    0,
+    parseInt(String(limit), 10)
+  );
 
   res.json({ data: trending });
 };
