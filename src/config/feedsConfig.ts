@@ -40,11 +40,11 @@ export const feeds: FeedNews[] = [
   //   source: "ایسنا",
   //   category: "علمی و دانشگاهی",
   // },
-  // {
-  //   url: `${FEED_BASE_URLS.ISNA}/tp/24`,
-  //   source: "ایسنا",
-  //   category: "ورزش",
-  // },
+  {
+    url: `${FEED_BASE_URLS.ISNA}/tp/24`,
+    source: "ایسنا",
+    category: "ورزشی",
+  },
   // {
   //   url: `${FEED_BASE_URLS.ISNA}/tp/20`,
   //   source: "ایسنا",
@@ -77,7 +77,7 @@ export const feeds: FeedNews[] = [
   // {
   //   url: `${FEED_BASE_URLS.IRNA}/tp/14`,
   //   source: "ایرنا",
-  //   category: "ورزش",
+  //   category: "ورزشی",
   // },
 
   // ShahreKhabar
@@ -86,11 +86,11 @@ export const feeds: FeedNews[] = [
   //   source: "شهر خبر",
   //   category: "سیاسی",
   // },
-  // {
-  //   url: `${FEED_BASE_URLS.SHAHREKHABAR}?type=8`,
-  //   source: "شهر خبر",
-  //   category: "ورزشی",
-  // },
+  {
+    url: `${FEED_BASE_URLS.SHAHREKHABAR}?type=8`,
+    source: "شهر خبر",
+    category: "ورزشی",
+  },
   // {
   //   url: `${FEED_BASE_URLS.SHAHREKHABAR}?type=4`,
   //   source: "شهر خبر",
